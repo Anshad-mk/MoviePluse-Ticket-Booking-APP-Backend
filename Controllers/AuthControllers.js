@@ -1,5 +1,6 @@
 const userModel = require('../Models/userModel')
 const bcrypt =require('bcrypt')
+const jwt = require('jsonwebtoken');
 
 module.exports.register = async (req,res)=>{
 try {
@@ -21,11 +22,16 @@ module.exports.login =async (req,res,next)=>{
          if(user){
             bcrypt.compare(password, user.password, function(err, result) {
                 if (result === true) {
+                    const token = jwt.sign({ email }, 'secret');
+                        res.json({ token });
                   console.log('Passwords match!');
                 } else {
+                    res.status(401).json({ error: 'Invalid email or password' });
                   console.log('Passwords do not match.');
                 }
               });
+         }else{
+             res.status(401).json({ error: 'Invalid email or password' });
          }
     } catch (error) {
         

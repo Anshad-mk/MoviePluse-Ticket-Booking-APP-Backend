@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const { adminLogin} = require("../Controllers/AdminAuth");
 
 
 
-router.get('/', function (req, res, next) {
-    
-  
-});
+router.post('/login', adminLogin);
 
 module.exports = router;
