@@ -5,9 +5,9 @@ const jwt = require("jsonwebtoken");
 module.exports.adminLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password, "llllllllllllllll");
+    console.log(email, password);
     const admin = await adminModel.findOne({ email });
-    console.log(admin, "jk;ajdf;lkjasd;lfkja;lsdkfja;lsdkfja;lsdkfja;lsdkjf");
+    console.log(admin);
     if (admin) {
       bcrypt.compare(password, admin.password, function (err, result) {
         if (result === true) {

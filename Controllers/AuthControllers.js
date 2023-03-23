@@ -6,6 +6,7 @@ module.exports.register = async (req,res)=>{
 try {
     const {email,phone,password} = req.body;
      const user = await userModel.create({email,phone,password})
+     res.status(200).send({user})
     
 } catch (error) {
     console.log(error)
@@ -25,6 +26,7 @@ module.exports.login =async (req,res,next)=>{
                     const token = jwt.sign({ email }, 'secret');
                         res.json({ token });
                   console.log('Passwords match!');
+                //   res.status(200).send({msg:"user logged in"})
                 } else {
                     res.status(401).json({ error: 'Invalid email or password' });
                   console.log('Passwords do not match.');

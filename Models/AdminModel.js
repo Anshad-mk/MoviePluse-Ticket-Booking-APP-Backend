@@ -10,18 +10,17 @@ const adminSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    require: [true, " Email is require"],
+    require: [true, " Password is require"],
   }
 
 });
 
-adminSchema.pre('save',async function (next) {
-    const salt = await bcrypt.genSalt()
-    this.password = await bcrypt.hash(this.password, salt)
-  })
+// adminSchema.pre('save',async function (next) {
+//     const salt = await bcrypt.genSalt()
+//     this.password = await bcrypt.hash(this.password, salt)
+//   })
 
 
 
 module.exports = mongoose.model("admins", adminSchema);
 
-// const data = await userMode.create({name:'anshad'})

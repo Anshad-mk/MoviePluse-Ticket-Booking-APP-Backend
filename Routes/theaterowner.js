@@ -1,11 +1,11 @@
-const express = require('express')
+const express = require('express');
+const { Login , Register } = require('../Controllers/TheatorOwnerControllers')
 const router = express.Router()
 
 
 
-router.get('/', function (req, res, next) {
-    
-  
-});
+router.post("/login",Login);
+router.post("/register",Register);
+
 
 module.exports = router;
