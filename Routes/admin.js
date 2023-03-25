@@ -1,17 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const { adminLogin} = require("../Controllers/AdminAuth");
-const {theatorAccept , allOwners,addMovie,editMovie,deleteMovie } = require('../Controllers/AdminControlls')
+const {theatorAccept,SearchMovie,updateMovie,allOwners,addMovie,editMovie,deleteMovie } = require('../Controllers/AdminControlls')
 
 
+// http://localhost:4000/admin/
 
-router.post('/login', adminLogin);
+//get
 router.get('/allOwners',allOwners)
-router.patch('/accept',theatorAccept)
-router.post('/addMovie',addMovie)
 router.get('/editMovie/:id',editMovie)
-// router.get('/editMovie/:id',editMovie)
+router.get('/search/:key',SearchMovie)
+
+//post 
+router.post('/login', adminLogin);
+router.post('/addMovie',addMovie)
+
+
+//patch
+router.patch('/accept',theatorAccept)
+router.patch('/updateMovie',updateMovie)
+
+//delete
 router.delete('/deleteMovie/:id',deleteMovie)
+
 
 
 
