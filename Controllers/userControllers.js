@@ -1,6 +1,7 @@
 const userModel = require('../Models/userModel')
 const bcrypt =require('bcrypt')
 const jwt = require('jsonwebtoken');
+const MovieModel = require('../Models/MovieModel');
 
 module.exports.register = async (req,res)=>{
 try {
@@ -35,6 +36,27 @@ module.exports.login =async (req,res,next)=>{
          }else{
              res.status(401).json({ error: 'Invalid email or password' });
          }
+    } catch (error) {
+        
+    }
+}
+
+module.exports.Movielist = async (req,res,next)=>{
+    try {
+        MovieModel.find({}).then((resp)=>{
+           res.json(resp)
+        })
+
+    } catch (error) {
+        res.status(404).send(error)
+    }
+}
+module.exports.singleMovie =async (req,res,next)=>{
+    // console.log()
+    try {
+        MovieModel.findOne({_id:req.params.id}).then((resp)=>{
+            res.json(resp)
+        })
     } catch (error) {
         
     }

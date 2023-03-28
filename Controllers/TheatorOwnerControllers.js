@@ -28,12 +28,11 @@ module.exports.Login = async (req, res, next) => {
       bcrypt.compare(password, TheatOwner.password, function (err, result) {
         if (result === true) {
           if (TheatOwner.accepted === true) {
-            console.log(result);
             const token = jwt.sign({ email }, "secret");
-            res.json({ token });
-            console.log("Passwords match!");
+            res.json({ created: true })
+            console.log('Password match')
           } else {
-            res.status(401).json({ error: "Admin Not accepted" });
+            res.json({ error: 'Admin Not accepted' })
           }
         }    else {
           res.status(401).json({ error: "Invalid email or password" });
