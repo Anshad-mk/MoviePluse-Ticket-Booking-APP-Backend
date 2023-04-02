@@ -1,6 +1,30 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
+
+const screenSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  seating_capacity: {
+    type: Number,
+    required: true
+  },
+  row: {
+    type: Number,
+    required: true
+  },
+  column: {
+    type: Number,
+    required: true
+  },
+  screen_type: {
+    type: String,
+    required: true
+  }
+});
+
 const theaterOwnerSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -18,8 +42,11 @@ const theaterOwnerSchema = new mongoose.Schema({
       },
       accepted: {
         type: Boolean
-      }
+      },
+      screens:[screenSchema]
 })
+
+
 
 theaterOwnerSchema.pre('save',async function (next) {
   const salt = await bcrypt.genSalt()

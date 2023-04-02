@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { adminLogin } = require("../Controllers/AdminAuth");
+const {Register} = require("../Controllers/TheatorOwnerControllers")
 const {
   theatorAccept,
   SearchMovie,
@@ -17,7 +18,7 @@ const {
   block
 } = require("../Controllers/AdminControlls");
 
-// http://localhost:4000/admin/blocked/642126d3b12af50daefdd1ec
+// http://localhost:4000/admin/edit-user
 
 //get
 
@@ -30,8 +31,9 @@ router.get("/TheaterReview", allTheater);
 
 //post
 router.post("/login", adminLogin);
-router.post("/addMovie", addMovie);
+router.post("/add-movies", addMovie);
 router.post("/add-users", addUser);
+router.post("/add-Theater",Register)
 
 
 //put 
@@ -40,7 +42,7 @@ router.put('/edit-user',editUser)
 //patch
 router.patch("/accept", theatorAccept);
 router.patch("/updateMovie", updateMovie);
-router.patch("/blocked/:id",block)
+router.patch("/blocked",block)
 
 //delete
 router.delete("/deleteMovie/:id", deleteMovie);

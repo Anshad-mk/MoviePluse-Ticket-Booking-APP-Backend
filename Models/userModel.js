@@ -14,7 +14,12 @@ const userSchema = new mongoose.Schema({
   phone: {
     type: String,
     require: [true, " Phone is require"],
+  },
+  isBlocked: {
+    type: Boolean,
+    require: true,
   }
+  
 
 });
 

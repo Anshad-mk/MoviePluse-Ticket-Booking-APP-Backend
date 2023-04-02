@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 function authMiddleware(req, res, next) {
-  const token = req.headers.authorization
+
+  const Authtoken = req.headers.authorization
+ 
+  const token = Authtoken && Authtoken.split(' ')[1];
 
   if (!token) {
     return res.status(401).json({ error: 'Authorization header missing' });
@@ -16,7 +19,9 @@ function authMiddleware(req, res, next) {
   }
 }
 
-app.get('/api/protected', authMiddleware, (req, res) => {
-  res.json({ message: 'This route is protected' });
-});
+module.exports = authMiddleware;
+
+// app.get('/api/protected', authMiddleware, (req, res) => {
+//   res.json({ message: 'This route is protected' });
+// });
  
