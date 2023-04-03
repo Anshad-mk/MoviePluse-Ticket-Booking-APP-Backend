@@ -43,53 +43,54 @@ module.exports.allOwners = async (req, res, next) => {
 };
 
 module.exports.addMovie = async (req, res, next) => {
+  console.log(req.body);
   try {
     const {
       moviename,
       releasedate,
       description,
-      poster1,
-      poster2,
-      poster3,
+      posterUrl1,
+      posterUrl2,
+      posterUrl3,
       trailerlink,
       genre,
       language,
-    } = req.body
+    } = req.body;
 
     const Movie = {
       moviename: moviename,
       releasedate: Date(releasedate),
       description: description,
-      poster1: poster1,
-      poster2: poster2,
-      poster3: poster3,
+      poster1: posterUrl1,
+      poster2: posterUrl2,
+      poster3: posterUrl3,
       genre: genre,
       language: language,
       trailerlink: trailerlink,
-    }
+    };
 
     MovieModel.create(Movie).then((resp) => {
-      res.send({ msg: 'Movie Added successfully' })
-    })
+      res.send({ msg: "Movie Added successfully" });
+    });
   } catch (error) {
-    res.status(404).send(error)
-  }
-}
-
-module.exports.editMovie = async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    MovieModel.findOne({ _id: id })
-      .then((resp) => {
-        res.status(200).send(resp);
-      })
-      .catch((err) => {
-        res.status(402).send(err);
-      });
-  } catch (error) {
-    console.log(error);
+    res.status(404).send(error);
   }
 };
+
+// module.exports.editMovie = async (req, res, next) => {
+//   try {
+//     const id = req.params.id;
+//     MovieModel.findOne({ _id: id })
+//       .then((resp) => {
+//         res.status(200).send(resp);
+//       })
+//       .catch((err) => {
+//         res.status(402).send(err);
+//       });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 module.exports.updateMovie = async (req, res, next) => {
   try {
@@ -197,29 +198,70 @@ module.exports.allTheater = async (req, res, next) => {
 };
 
 module.exports.editUser = async (req, res, next) => {
-  console.log(req.body)
+  console.log(req.body);
   const { _id, phone, email } = req.body;
   try {
-    userModel.updateOne({ _id: _id },{phone:phone, email:email}).then((resp)=>{
-      res.status(200).send({"msg":`user updated ${email}`})
-    })
+    userModel
+      .updateOne({ _id: _id }, { phone: phone, email: email })
+      .then((resp) => {
+        res.status(200).send({ msg: `user updated ${email}` });
+      });
   } catch (error) {
     res.status(404).send(error);
   }
 };
 
-module.exports.block = async (req,res,next)=>{
+module.exports.block = async (req, res, next) => {
   // const id = req.params.id;
-  console.log(req.body)
+  console.log(req.body);
   try {
-    userModel.updateOne({_id:req.body.userid},{isBlocked:req.body.status}).then((resp)=>{
-      
-      console.log(resp)
-      res.status(200).send({msg:`user Blocked`,status:req.body.status})
-    }).catch((err)=>{
-      res.status(404).send(err)
-    })
+    userModel
+      .updateOne({ _id: req.body.userid }, { isBlocked: req.body.status })
+      .then((resp) => {
+        console.log(resp);
+        res.status(200).send({ msg: `user Blocked`, status: req.body.status });
+      })
+      .catch((err) => {
+        res.status(404).send(err);
+      });
   } catch (error) {
     res.status(404).send(error);
+  }
+};
+
+module.exports.editMovie = async (req,res,next)=>{
+  console.log(req.body)
+  const {
+    moviename,
+    releasedate,
+    description,
+    posterUrl1,
+    posterUrl2,
+    posterUrl3,
+    trailerlink,
+    genre,
+    language,
+  } = req.body;
+
+  const Movie = {
+    moviename: moviename,
+    releasedate: releasedate,
+    description: description,
+    poster1: posterUrl1,
+    poster2: posterUrl2,
+    poster3: posterUrl3,
+    genre: genre,
+    language: language,
+    trailerlink: trailerlink,
+  };
+  
+  try {
+    MovieModel.updateOne({_id:req.body._id},{...Movie}).then((resp)=>{
+      res.json(resp)
+    }).catch((err)=>{
+      res.json(err)
+    })
+  } catch (error) {
+    res.status(404).send(error)
   }
 }

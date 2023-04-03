@@ -12,18 +12,18 @@ const {
   AllMovies,
   allOwners,
   addMovie,
-  editMovie,
   deleteMovie,
   editUser,
-  block
+  block,
+  editMovie
 } = require("../Controllers/AdminControlls");
 
-// http://localhost:4000/admin/edit-user
+// http://localhost:4000/admin/edit-movie
 
 //get
 
 router.get("/allOwners", allOwners);
-router.get("/editMovie/:id", editMovie);
+// router.get("/editMovie/:id", editMovie);
 router.get("/search/:key", SearchMovie);
 router.get("/allMovies", AllMovies);
 router.get("/allusers", allUsers);
@@ -38,6 +38,7 @@ router.post("/add-Theater",Register)
 
 //put 
 router.put('/edit-user',editUser)
+router.put('/edit-movie',editMovie)
 
 //patch
 router.patch("/accept", theatorAccept);
