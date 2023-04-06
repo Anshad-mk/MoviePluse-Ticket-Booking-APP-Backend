@@ -23,7 +23,6 @@ const {
 //get
 
 router.get("/allOwners", allOwners);
-// router.get("/editMovie/:id", editMovie);
 router.get("/search/:key", SearchMovie);
 router.get("/allMovies", AllMovies);
 router.get("/allusers", allUsers);
