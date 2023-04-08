@@ -1,6 +1,8 @@
 const TheaterOwnerModel = require("../Models/TheaterOwnerModel");
+const MovieModel =require("../Models/MovieModel")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const ShowModel = require("../Models/ShowModel");
 
 const handleErrors = (err) => {
   let errors = { email: "", password: "" };
@@ -13,11 +15,14 @@ const handleErrors = (err) => {
 
 module.exports.Register = async (req, res, next) => {
   try {
-    const { email, phone, password } = req.body;
+    const { email, phone, password,name,place } = req.body;
+    console.log(req.body)
     const autherize = { accepted: false };
     const TheaterOwner = await TheaterOwnerModel.create({
       email,
+      name,
       phone,
+      place,
       password,
       ...autherize,
     });
@@ -111,4 +116,49 @@ module.exports.deleteScreen = async (req,res,next)=>{
   const {email} = req.user;
   
   
+}
+
+module.exports.AddShow= async (req,res,next)=>{
+  const {email} = req.user;
+  let Theater = await TheaterOwnerModel.findOne({email:email}) 
+  let Movie = await MovieModel.findOne({_id:req.body.movie})
+  let Times = req.body.ShowTimes.map((showtimes)=>{
+    return showtimes.value;
+  })
+  const screen = Theater.screens.find((screen) => screen._id == req.body.screen);
+  const newData ={
+    startDate:new Date(req.body.startDate),
+    EndDate:new Date(req.body.EndDate),
+    ShowTimes:Times,
+    TicketPrice:req.body.TicketPrice,
+    Movie:Movie,
+    theater:{
+      name: Theater.name,
+      address: Theater.place,
+      screen:screen,
+   }
+  }  
+try {
+  console.log(newData)
+ShowModel.create(newData).then((resp)=>{
+  res.send({msg:"Screen Added Successfully", created:true})
+})
+    
+} catch (error) {
+  res.status(404).send(error)
+}
+  
+}
+
+module.exports.Screen = async (req,res,next)=>{
+  const {email} = req.user
+  try {
+    TheaterOwnerModel.findOne({email:email}).then((resp)=>{
+      res.json(resp)
+    }).catch((err)=>{
+      res.json(err)
+    })
+  } catch (error) {
+    res.status(404).send(error)
+  }
 }

@@ -2,6 +2,7 @@ const userModel = require("../Models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const MovieModel = require("../Models/MovieModel");
+const TheaterOwnerModel = require("../Models/TheaterOwnerModel");
 
 module.exports.register = async (req, res) => {
   try {
@@ -71,3 +72,15 @@ module.exports.emailauth = async (req, res, next) => {
     console.log(error);
   }
 };
+
+module.exports.findtheater = async (req,res,next)=>{
+  const MovieId= req.params.id;
+  try {
+TheaterOwnerModel.find({"screens.shows.MovieID":MovieId}).then((resp)=>{
+  console.log(resp)
+  res.json(resp)
+})
+  } catch (error) {
+    
+  }
+}

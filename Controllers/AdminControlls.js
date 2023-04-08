@@ -77,21 +77,6 @@ module.exports.addMovie = async (req, res, next) => {
   }
 };
 
-// module.exports.editMovie = async (req, res, next) => {
-//   try {
-//     const id = req.params.id;
-//     MovieModel.findOne({ _id: id })
-//       .then((resp) => {
-//         res.status(200).send(resp);
-//       })
-//       .catch((err) => {
-//         res.status(402).send(err);
-//       });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 module.exports.updateMovie = async (req, res, next) => {
   try {
     const {
