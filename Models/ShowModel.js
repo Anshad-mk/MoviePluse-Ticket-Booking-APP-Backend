@@ -84,6 +84,7 @@ const ShowSchema = new mongoose.Schema({
     Movie:MovieSchema,
     theater: {
       name: String ,
+      email:String,
       address: String,
       screen:screenSchema,
    }

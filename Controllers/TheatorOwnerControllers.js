@@ -134,6 +134,7 @@ module.exports.AddShow= async (req,res,next)=>{
     Movie:Movie,
     theater:{
       name: Theater.name,
+      email:Theater.email,
       address: Theater.place,
       screen:screen,
    }
@@ -158,6 +159,20 @@ module.exports.Screen = async (req,res,next)=>{
     }).catch((err)=>{
       res.json(err)
     })
+  } catch (error) {
+    res.status(404).send(error)
+  }
+}
+
+module.exports.ScreennedMovies = async (req,res,next)=>{
+ const {email} = req.user
+  try {
+ShowModel.find({"theater.email":email}).then((ScreendMovies)=>{
+  res.status(200).send(ScreendMovies)
+}).catch((err)=>{
+  res.status(404).send(err)
+})
+    
   } catch (error) {
     res.status(404).send(error)
   }
