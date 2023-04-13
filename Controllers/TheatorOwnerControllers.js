@@ -3,6 +3,7 @@ const MovieModel =require("../Models/MovieModel")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const ShowModel = require("../Models/ShowModel");
+const BookingModel = require("../Models/BookingModel");
 
 const handleErrors = (err) => {
   let errors = { email: "", password: "" };
@@ -176,4 +177,10 @@ ShowModel.find({"theater.email":email}).then((ScreendMovies)=>{
   } catch (error) {
     res.status(404).send(error)
   }
+}
+
+module.exports.reservations = async (req,res,next)=>{
+  BookingModel.find().then((resp)=>{
+    res.status(200).send(resp)
+  })
 }

@@ -1,5 +1,5 @@
 const express = require('express');
-const { Login , Register,ScreennedMovies ,AutherizedCheck ,addscreen ,ViewScreen ,deleteScreen,AddShow ,Screen } = require('../Controllers/TheatorOwnerControllers')
+const { Login , Register,ScreennedMovies  ,AutherizedCheck ,addscreen ,ViewScreen ,deleteScreen,AddShow ,Screen,reservations } = require('../Controllers/TheatorOwnerControllers')
 const authMiddleware = require('../middlewares/authMiddlewares')
 const router = express.Router()
 
@@ -14,6 +14,7 @@ router.delete("/view-screen",authMiddleware,deleteScreen)
 router.post("/addShow",authMiddleware,AddShow)
 router.get("/screen",authMiddleware,Screen)
 router.get("/show-Screened-Movies",authMiddleware,ScreennedMovies)
+router.get("/reservations",authMiddleware,reservations)
 
 
 module.exports = router;

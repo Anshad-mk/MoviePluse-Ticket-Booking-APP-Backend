@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const MovieModel = require("../Models/MovieModel");
 const TheaterOwnerModel = require("../Models/TheaterOwnerModel");
-const ShowModel = require("../Models/ShowModel")
-
+const ShowModel = require("../Models/ShowModel");
+const BookingModel = require("../Models/BookingModel.js");
 
 module.exports.register = async (req, res) => {
   try {
@@ -69,33 +69,62 @@ module.exports.singleMovie = async (req, res, next) => {
 
 module.exports.emailauth = async (req, res, next) => {
   try {
-   console.log(req.body);
+    console.log(req.body);
   } catch (error) {
     console.log(error);
   }
 };
 
-module.exports.findtheater = async (req,res,next)=>{
-  const MovieId= req.params.id;
+module.exports.findtheater = async (req, res, next) => {
+  const MovieId = req.params.id;
   try {
-TheaterOwnerModel.find({"screens.shows.MovieID":MovieId}).then((resp)=>{
-  console.log(resp)
-  res.json(resp)
-})
-  } catch (error) {
-    
-  }
-}
+    TheaterOwnerModel.find({ "screens.shows.MovieID": MovieId }).then(
+      (resp) => {
+        console.log(resp);
+        res.json(resp);
+      }
+    );
+  } catch (error) {}
+};
 
-module.exports.
-findShow = async (req,res,next)=>{
-  const id = req.params.id
+module.exports.findShow = async (req, res, next) => {
+  const id = req.params.id;
   try {
-    ShowModel.find({"Movie._id":id}).then((resp)=>{
-      res.status(200).send(resp)
-    })
-    
+    ShowModel.find({ "Movie._id": id }).then((resp) => {
+      res.status(200).send(resp);
+    });
   } catch (error) {
-    res.status(404).send(error)
+    res.status(404).send(error);
   }
-}
+};
+
+module.exports.seatbooking = async (req, res, next) => {
+  const { email } = req.user;
+
+  try {
+    BookingModel.create({
+      user: {
+        email: email,
+      },
+      show: {
+        date: req.body.show.date,
+        time: req.body.show.time,
+        SeatNumber: req.body.show.SeatNumber,
+        price: req.body.show.price,
+        TotelPrice: req.body.show.TotelPrice,
+      },
+      movie: req.body.movie,
+      theater: req.body.theater,
+    })
+      .then((resp) => {
+        console.log(resp);
+        res.status(200).send(resp);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(404).send(error);
+  }
+};
