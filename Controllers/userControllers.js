@@ -6,49 +6,73 @@ const TheaterOwnerModel = require("../Models/TheaterOwnerModel");
 const ShowModel = require("../Models/ShowModel");
 const BookingModel = require("../Models/BookingModel.js");
 
+
+const handleErrors = (err) => {
+  let errors = { email: '', password: '' }
+
+  console.log(err)
+  if (err.message === 'incorrect email') {
+    errors.email = 'That email is not registered'
+  }
+
+  if (err.message === 'incorrect password') {
+    errors.password = 'That password is incorrect'
+  }
+
+  if (err.code === 11000) {
+    errors.email = 'Email is already registered'
+    return errors
+  }
+
+  if (err.message.includes('Users validation failed')) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors[properties.path] = properties.message
+    })
+  }
+  return errors
+}
+
 module.exports.register = async (req, res) => {
   try {
-    const { email, phone, password } = req.body;
+    const { email, name, password, phone } = req.body
+    const action = { isBlocked: true }
     const user = await userModel.create({
       email,
+      name,
       phone,
       password,
-      isBlocked: false,
-    });
-    res.status(200).send({ user });
-  } catch (error) {
-    console.log(error);
+      ...action,
+    })
+    res.json({ user: user._id, created: true })
+  } catch (err) {
+    console.log(err, 'Error from server,register')
+    const errors = handleErrors(err)
+    res.json({ errors, created: false })
   }
-};
+}
 
 module.exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    console.log(email, password);
-    const user = await userModel.findOne({ email });
-    console.log(user);
+    const { email, password } = req.body
+    const user = await userModel.findOne({ email })
     if (user) {
       bcrypt.compare(password, user.password, function (err, result) {
         if (result === true) {
-          if (user.isBlocked) {
-            res.status(401).json({ error: "user Blocked Contact admin" });
-          } else {
-            const token = jwt.sign({ email }, "secret");
-            res.json({ token });
-            console.log("Passwords match!");
-          }
-          //   res.status(200).send({msg:"user logged in"})
+          const token = jwt.sign({ email }, 'SuperSecretKey')
+          res.json({ created: true, token })
         } else {
-          res.status(401).json({ error: "Invalid email or password" });
-          console.log("Passwords do not match.");
+          res.json({ error: 'Invalid email or password' })
+          console.log('Passwords do not match.')
         }
-      });
+      })
     } else {
-      res.status(401).json({ error: "Invalid email or password" });
+      res.json({ error: 'Invalid email or password' })
     }
-  } catch (error) {}
-};
-
+  } catch (error) {
+    console.log(error)
+    res.send(error)
+  }
+}
 module.exports.Movielist = async (req, res, next) => {
   try {
     MovieModel.find({}).then((resp) => {
