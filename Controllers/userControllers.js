@@ -53,20 +53,28 @@ module.exports.register = async (req, res) => {
 
 module.exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body
-    const user = await userModel.findOne({ email })
+    const { email, password } = req.body;
+    console.log(email, password);
+    const user = await userModel.findOne({ email });
+    console.log(user);
     if (user) {
       bcrypt.compare(password, user.password, function (err, result) {
         if (result === true) {
-          const token = jwt.sign({ email }, 'SuperSecretKey')
-          res.json({ created: true, token })
+          if (user.isBlocked) {
+            res.status(401).json({ error: "user Blocked Contact admin" });
+          } else {
+            const token = jwt.sign({ email }, "secret");
+            res.json({ created: true, token })
+            console.log("Passwords match!");
+          }
+          //   res.status(200).send({msg:"user logged in"})
         } else {
-          res.json({ error: 'Invalid email or password' })
-          console.log('Passwords do not match.')
+          res.status(401).json({ error: "Invalid email or password" });
+          console.log("Passwords do not match.");
         }
-      })
+      });
     } else {
-      res.json({ error: 'Invalid email or password' })
+      res.status(401).json({ error: "Invalid email or password" });
     }
   } catch (error) {
     console.log(error)
@@ -152,3 +160,23 @@ module.exports.seatbooking = async (req, res, next) => {
     res.status(404).send(error);
   }
 };
+
+
+module.exports.verifyNumber = async (req,res,next)=>{
+  let number = req.body.number.split('+91')[1]
+  console.log(number)
+  userModel.updateOne({phone:number},{$set:{verified:req.body.verified}}).then((resp)=>{
+    console.log(resp)
+    
+     if (resp.matchedCount > 0){
+      res.status(200).send({verified:true,resp})
+    }else if(resp.modifiedCount == 0 || resp.matchedCount == 0){
+      res.status(200).send({err:"Not Verified",resp})
+    }
+   
+  }).catch((err)=>{
+    res.status(200).send(err)
+  })
+   
+  
+}
