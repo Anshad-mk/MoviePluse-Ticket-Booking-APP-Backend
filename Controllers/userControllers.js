@@ -10,7 +10,6 @@ const BookingModel = require("../Models/BookingModel.js");
 const handleErrors = (err) => {
   let errors = { email: '', password: '' }
 
-  console.log(err)
   if (err.message === 'incorrect email') {
     errors.email = 'That email is not registered'
   }
@@ -41,6 +40,7 @@ module.exports.register = async (req, res) => {
       name,
       phone,
       password,
+      verified:false,
       ...action,
     })
     res.json({ user: user._id, created: true })
@@ -62,6 +62,8 @@ module.exports.login = async (req, res, next) => {
         if (result === true) {
           if (user.isBlocked) {
             res.status(401).json({ error: "user Blocked Contact admin" });
+          } else if (!user.verified) {
+            res.status(401).json({ error: "user Not verified" });
           } else {
             const token = jwt.sign({ email }, "secret");
             res.json({ created: true, token })
