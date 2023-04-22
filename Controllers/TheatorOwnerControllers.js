@@ -1,5 +1,5 @@
 const TheaterOwnerModel = require("../Models/TheaterOwnerModel");
-const MovieModel =require("../Models/MovieModel")
+const MovieModel = require("../Models/MovieModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const ShowModel = require("../Models/ShowModel");
@@ -16,8 +16,8 @@ const handleErrors = (err) => {
 
 module.exports.Register = async (req, res, next) => {
   try {
-    const { email, phone, password,name,place } = req.body;
-    console.log(req.body)
+    const { email, phone, password, name, place } = req.body;
+    console.log(req.body);
     const autherize = { accepted: false };
     const TheaterOwner = await TheaterOwnerModel.create({
       email,
@@ -92,10 +92,10 @@ module.exports.addscreen = async (req, res, next) => {
   try {
     TheaterOwnerModel.updateOne({ email: email }, { $push: { screens: data } })
       .then((resp) => {
-        res.json({created:true})
+        res.json({ created: true });
       })
       .catch((err) => {
-        res.json({created:false,err})
+        res.json({ created: false, err });
       });
   } catch (error) {
     res.status(404).send(error);
@@ -113,74 +113,87 @@ module.exports.ViewScreen = async (req, res, next) => {
   }
 };
 
-module.exports.deleteScreen = async (req,res,next)=>{
-  const {email} = req.user;
-  
-  
-}
+module.exports.deleteScreen = async (req, res, next) => {
+  const { email } = req.user;
+};
 
-module.exports.AddShow= async (req,res,next)=>{
-  const {email} = req.user;
-  let Theater = await TheaterOwnerModel.findOne({email:email}) 
-  let Movie = await MovieModel.findOne({_id:req.body.movie})
-  let Times = req.body.ShowTimes.map((showtimes)=>{
+module.exports.AddShow = async (req, res, next) => {
+  const { email } = req.user;
+  let Theater = await TheaterOwnerModel.findOne({ email: email });
+  let Movie = await MovieModel.findOne({ _id: req.body.movie });
+  let Times = req.body.ShowTimes.map((showtimes) => {
     return showtimes.value;
-  })
-  const screen = Theater.screens.find((screen) => screen._id == req.body.screen);
-  const newData ={
-    startDate:new Date(req.body.startDate),
-    EndDate:new Date(req.body.EndDate),
-    ShowTimes:Times,
-    TicketPrice:req.body.TicketPrice,
-    Movie:Movie,
-    theater:{
+  });
+  const screen = Theater.screens.find(
+    (screen) => screen._id == req.body.screen
+  );
+  const newData = {
+    startDate: new Date(req.body.startDate),
+    EndDate: new Date(req.body.EndDate),
+    ShowTimes: Times,
+    TicketPrice: req.body.TicketPrice,
+    Movie: Movie,
+    theater: {
       name: Theater.name,
-      email:Theater.email,
+      email: Theater.email,
       address: Theater.place,
-      screen:screen,
-   }
-  }  
+      screen: screen,
+    },
+  };
+  try {
+    console.log(newData);
+    ShowModel.create(newData).then((resp) => {
+      res.send({ msg: "Screen Added Successfully", created: true });
+    });
+  } catch (error) {
+    res.status(404).send(error);
+  }
+};
+
+module.exports.Screen = async (req, res, next) => {
+  const { email } = req.user;
+  try {
+    TheaterOwnerModel.findOne({ email: email })
+      .then((resp) => {
+        res.json(resp);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  } catch (error) {
+    res.status(404).send(error);
+  }
+};
+
+module.exports.ScreennedMovies = async (req, res, next) => {
+  const { email } = req.user;
+  try {
+    ShowModel.find({ "theater.email": email })
+      .then((ScreendMovies) => {
+        res.status(200).send(ScreendMovies);
+      })
+      .catch((err) => {
+        res.status(404).send(err);
+      });
+  } catch (error) {
+    res.status(404).send(error);
+  }
+};
+
+module.exports.reservations = async (req, res, next) => {
+  BookingModel.find().then((resp) => {
+    res.status(200).send(resp);
+  });
+};
+
+module.exports.reservationManagement = async (req,res,next) => {
 try {
-  console.log(newData)
-ShowModel.create(newData).then((resp)=>{
-  res.send({msg:"Screen Added Successfully", created:true})
-})
-    
+  const {email} = req.user;
+  BookingModel.find({"theater.email":email}).then((resp)=>{
+    res.status(200).send(resp)
+    console.log(resp)
+  })
 } catch (error) {
-  res.status(404).send(error)
-}
   
 }
-
-module.exports.Screen = async (req,res,next)=>{
-  const {email} = req.user
-  try {
-    TheaterOwnerModel.findOne({email:email}).then((resp)=>{
-      res.json(resp)
-    }).catch((err)=>{
-      res.json(err)
-    })
-  } catch (error) {
-    res.status(404).send(error)
-  }
-}
-
-module.exports.ScreennedMovies = async (req,res,next)=>{
- const {email} = req.user
-  try {
-ShowModel.find({"theater.email":email}).then((ScreendMovies)=>{
-  res.status(200).send(ScreendMovies)
-}).catch((err)=>{
-  res.status(404).send(err)
-})
-    
-  } catch (error) {
-    res.status(404).send(error)
-  }
-}
-
-module.exports.reservations = async (req,res,next)=>{
-  BookingModel.find().then((resp)=>{
-    res.status(200).send(resp)
-  })
 }
