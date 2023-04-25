@@ -80,9 +80,9 @@ module.exports.AutherizedCheck = async (req, res, next) => {
 
 module.exports.addscreen = async (req, res, next) => {
   const { email } = req.user;
-
+console.log(req.body)
   const data = {
-    name: req.body.moviename,
+    name: req.body.name,
     seating_capacity: req.body.totalcount,
     row: req.body.rowcount,
     column: req.body.columncount,
@@ -96,6 +96,7 @@ module.exports.addscreen = async (req, res, next) => {
       })
       .catch((err) => {
         res.json({ created: false, err });
+        // const errors = handleErrors(err);
       });
   } catch (error) {
     res.status(404).send(error);
@@ -168,7 +169,7 @@ module.exports.Screen = async (req, res, next) => {
 module.exports.ScreennedMovies = async (req, res, next) => {
   const { email } = req.user;
   try {
-    ShowModel.find({ "theater.email": email })
+    ShowModel.find({ "theater.email": email }).sort({'EndDate': -1})
       .then((ScreendMovies) => {
         res.status(200).send(ScreendMovies);
       })
@@ -191,7 +192,7 @@ try {
   const {email} = req.user;
   BookingModel.find({"theater.email":email}).then((resp)=>{
     res.status(200).send(resp)
-    console.log(resp)
+    // console.log(resp)
   })
 } catch (error) {
   

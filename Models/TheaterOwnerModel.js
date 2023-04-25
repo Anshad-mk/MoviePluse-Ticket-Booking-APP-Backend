@@ -6,7 +6,8 @@ const bcrypt = require("bcrypt");
 const screenSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    require: [true, " Screen Name is require"],
+    unique: true,
   },
   seating_capacity: {
     type: Number,
@@ -52,7 +53,7 @@ const theaterOwnerSchema = new mongoose.Schema({
   accepted: {
     type: Boolean,
   },
-  screens: [screenSchema],
+  screens:[screenSchema]
 });
 
 theaterOwnerSchema.pre("save", async function (next) {

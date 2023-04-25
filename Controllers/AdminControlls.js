@@ -250,3 +250,13 @@ module.exports.editMovie = async (req,res,next)=>{
     res.status(404).send(error)
   }
 }
+
+module.exports.blockMovie = async (req,res,next)=>{
+  const { id, isBlocked } = req.query;
+  console.log(id, isBlocked)
+MovieModel.updateOne({_id:id},{isBlocked:isBlocked}).then((resp)=>{
+  console.log(resp)
+}).catch((err)=>{
+  console.log(err)
+})
+}

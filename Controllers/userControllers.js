@@ -239,3 +239,29 @@ module.exports.confirmPayment = async (req,res,next)=>{
     console.log(response)
   })
 }
+
+module.exports.newrelease = async (req, res, next) => {
+  try {
+    MovieModel
+      .find().sort({"releasedate": -1}).limit(8)
+      .then((resp) => {
+        res.json(resp)
+      })
+      .catch((err) => {
+        res.json(err)
+      })
+  } catch (error) {
+    res.status(404).send(error)
+  }
+}
+
+module.exports.categorymovie = async (req, res, next) => {
+  try {
+    var category = req.params.category
+    console.log(category);
+    MovieModel.find({ genre: category }).then((resp) => {
+      console.log(resp);
+      res.json(resp);
+    });
+  } catch (error) {}
+};

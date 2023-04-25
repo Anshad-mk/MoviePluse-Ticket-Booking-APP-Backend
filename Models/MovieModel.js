@@ -37,6 +37,9 @@ const MovieSchema = new mongoose.Schema({
     trailerlink:{
         type:String,
         require:true
+    },
+    isBlocked:{
+        type:Boolean
     }
 })
 

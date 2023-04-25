@@ -15,7 +15,8 @@ const {
   deleteMovie,
   editUser,
   block,
-  editMovie
+  editMovie,
+  blockMovie
 } = require("../Controllers/AdminControlls");
 
 // http://localhost:4000/admin/edit-movie
@@ -27,6 +28,7 @@ router.get("/search/:key", SearchMovie);
 router.get("/allMovies", AllMovies);
 router.get("/allusers", allUsers);
 router.get("/TheaterReview", allTheater);
+router.get("/movieBlock",blockMovie)
 
 //post
 router.post("/login", adminLogin);
