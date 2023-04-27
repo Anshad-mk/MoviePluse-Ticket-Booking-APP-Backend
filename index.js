@@ -32,7 +32,7 @@ app.listen(8080, (e) => {
 
   app.use(
     cors({
-      origin: ["http://localhost:3000","http://192.168.88.190:3000"],
+      origin: ["http://localhost:3000","http://192.168.88.190:3000","https://relaxed-bublanina-7bc94f.netlify.app","https://second-main-project-front-end.vercel.app"],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true,
       allowedHeaders: ['Content-Type', 'Authorization']
