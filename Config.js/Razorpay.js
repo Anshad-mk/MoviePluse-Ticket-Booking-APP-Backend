@@ -1,8 +1,8 @@
 const dotenv = require('dotenv');
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
-YOUR_KEY_ID=rzp_test_nQfwBQkz6cfygO
-YOUR_SECRET_KEY=Q8R6KPz3a0RTgVuZZwDUzUb1
+YOUR_KEY_ID="rzp_test_nQfwBQkz6cfygO"
+YOUR_SECRET_KEY="Q8R6KPz3a0RTgVuZZwDUzUb1"
 
 // Load environment variables from .env file
 dotenv.config()
