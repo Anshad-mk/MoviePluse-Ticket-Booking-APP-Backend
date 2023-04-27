@@ -39,7 +39,7 @@ app.listen(4000, (e) => {
     })
   );
   
-const url = process.env.MONGODB_URL
+const url ="mongodb+srv://anshad:Dtp9544554696@cluster0.xmn2vbt.mongodb.net/movieplus?retryWrites=true&w=majority"
 mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
