@@ -6,6 +6,10 @@ const user =require('./Routes/user')
 const admin =require('./Routes/admin')
 const Therater =require('./Routes/theaterowner')
 const bodyParser = require('body-parser');
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const dotenv = require('dotenv');
+dotenv.config()
+
 
 const app = express();
 app.use((req, res, next) => {
@@ -35,8 +39,8 @@ app.listen(4000, (e) => {
     })
   );
   
-
-mongoose.connect('mongodb://0.0.0.0:27017/Bookmyshow', {
+const url = process.env.MONGODB_URL
+mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('MongoDB connected')).catch((err) => console.log(`MongoDB connection error: ${err}`));
