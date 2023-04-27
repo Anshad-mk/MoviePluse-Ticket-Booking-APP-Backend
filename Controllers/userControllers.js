@@ -84,7 +84,7 @@ module.exports.login = async (req, res, next) => {
 module.exports.Movielist = async (req, res, next) => {
   try {
     MovieModel.find({}).then((resp) => {
-      res.json(resp);
+      res.status(200).json(resp);
     });
   } catch (error) {
     res.status(404).send(error);
