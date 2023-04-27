@@ -11,7 +11,6 @@ const dotenv = require('dotenv');
 dotenv.config()
 
 
-
 const app = express();
 app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store')
@@ -33,9 +32,9 @@ app.listen(8080, (e) => {
 
   app.use(
     cors({
-      origin: ["http://localhost:3000","http://192.168.88.190:3000","https://relaxed-bublanina-7bc94f.netlify.app","https://second-main-project-front-end.vercel.app/"],
+      origin: ["http://localhost:3000","http://192.168.88.190:3000"],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-      withCredentials: true,
+      credentials: true,
       allowedHeaders: ['Content-Type', 'Authorization']
     })
   );
