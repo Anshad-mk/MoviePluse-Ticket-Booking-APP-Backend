@@ -32,7 +32,7 @@ app.listen(8080, (e) => {
 
   app.use(
     cors({
-      origin: '*',
+      origin: ["*","https://gorgeous-piroshki-d69169.netlify.app","https://relaxed-bublanina-7bc94f.netlify.app","https://main--relaxed-bublanina-7bc94f.netlify.app/"],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true,
       allowedHeaders: ['Content-Type', 'Authorization']
