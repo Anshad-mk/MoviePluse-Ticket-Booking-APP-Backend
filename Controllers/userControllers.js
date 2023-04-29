@@ -234,8 +234,9 @@ module.exports.order = async (req, res, next) => {
 module.exports.confirmPayment = async (req,res,next)=>{
   const {email} = req.user;
   console.log(req.body.bookingid)
+  const details = await BookingModel.find({ 'user.email': email })
   BookingModel.updateOne({_id:req.body.bookingid},{CompletPayment:true}).then((response)=>{
-    res.status(200).send(response)
+    res.status(200).send({response,details})
     console.log(response)
   })
 }
@@ -265,3 +266,11 @@ module.exports.categorymovie = async (req, res, next) => {
     });
   } catch (error) {}
 };
+
+module.exports.viewbooking = async (req, res, next) => {
+  const { email } = req.user
+  const user = await userModel.find({ email: email })
+  BookingModel.find({ 'user.email': email }).then((show) => {
+    res.status(200).send({ show, user })
+  })
+}

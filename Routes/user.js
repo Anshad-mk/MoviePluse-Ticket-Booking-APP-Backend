@@ -13,7 +13,8 @@ const {
   searchMovie,
   seatusage,
   newrelease,
-  categorymovie  
+  categorymovie,
+  viewbooking  
 } = require("../Controllers/userControllers");
 const express = require("express");
 const router = express.Router();
@@ -29,6 +30,7 @@ router.get("/findShow/:id", findShow);
 router.get("/search", searchMovie);
 router.get('/new-release', newrelease)
 router.get('/categorymovie/:category',categorymovie)
+router.get('/view-booking',verifyAuth,viewbooking)
 
 //post
 router.post("/signup", register);

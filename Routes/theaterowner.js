@@ -1,5 +1,5 @@
 const express = require('express');
-const { Login , Register,ScreennedMovies,reservationManagement  ,AutherizedCheck ,addscreen ,ViewScreen ,deleteScreen,AddShow ,Screen,reservations } = require('../Controllers/TheatorOwnerControllers')
+const { Login ,movietime,getShows, Register,ScreennedMovies,reservationManagement  ,AutherizedCheck ,addscreen ,ViewScreen ,deleteScreen,AddShow ,Screen,reservations } = require('../Controllers/TheatorOwnerControllers')
 const authMiddleware = require('../middlewares/authMiddlewares')
 const router = express.Router()
 
@@ -14,6 +14,8 @@ router.get("/screen",authMiddleware,Screen)
 router.get("/show-Screened-Movies",authMiddleware,ScreennedMovies)
 router.get("/reservations",authMiddleware,reservations)
 router.get("/ReservationMngmnt",authMiddleware,reservationManagement)
+router.get("/getShows",authMiddleware,getShows)
+router.get("/movie-time/:id",authMiddleware,movietime)
 
 
 //delete

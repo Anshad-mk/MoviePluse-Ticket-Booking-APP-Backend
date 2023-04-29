@@ -192,9 +192,42 @@ try {
   const {email} = req.user;
   BookingModel.find({"theater.email":email}).then((resp)=>{
     res.status(200).send(resp)
-    // console.log(resp)
   })
 } catch (error) {
   
 }
+}
+
+
+module.exports.movietime = async (req, res, next) => {
+  const screen_id = req.params.id
+  console.log(req.user)
+  const theater = []
+    const showTimes = []
+    const movieDetails = []
+
+  try {
+    const Shows = await  ShowModel.find({ 'theater.screen._id': screen_id })
+    if (!Shows) {
+      return res
+        .status(400)
+        .json({ message: 'Movie not found for given screen id.' })
+    } 
+    return res.status(200).json(Shows)
+
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({ message: 'Server error.' })
+  }
+}
+
+module.exports.getShows = async (req, res, next) => {
+  try {
+   ShowModel.find({'theater.email': req.user.email,
+   EndDate: { $gt: new Date()}}).then((resp)=>{
+    res.status(200).json(resp)
+   })
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' })
+  }
 }
