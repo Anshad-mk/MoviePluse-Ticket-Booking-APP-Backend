@@ -32,7 +32,7 @@ app.listen(8080, (e) => {
 
   app.use(
     cors({
-      origin: ["*","https://644b6f5530be156286d04e78--resonant-marzipan-1b2297.netlify.app","https://resonant-marzipan-1b2297.netlify.app","http://localhost:3000","http://localhost:4000","https://cheerful-kringle-7d7abc.netlify.app","http://localhost:8080"],
+      origin: ["*","https://644b6f5530be156286d04e78--resonant-marzipan-1b2297.netlify.app","https://resonant-marzipan-1b2297.netlify.app","http://localhost:3000","http://localhost:4000","https://cheerful-kringle-7d7abc.netlify.app","http://localhost:8080","https://startling-bunny-084de0.netlify.app"],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true,
       allowedHeaders: ['Content-Type', 'Authorization']
