@@ -44,6 +44,7 @@ module.exports.allOwners = async (req, res, next) => {
 
 module.exports.addMovie = async (req, res, next) => {
   console.log(req.body);
+  
   try {
     const {
       moviename,
